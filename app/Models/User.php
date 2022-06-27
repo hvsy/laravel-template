@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\UserScopes;
+use App\Traits\ModelScopes;
+use App\Traits\Searchable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -16,6 +17,9 @@ use Laravel\Sanctum\NewAccessToken;
 class User extends Authenticatable
 {
     use HasApiTokens,
+        UserScopes,
+        ModelScopes,
+        Searchable,
         Notifiable;
 
     /**
