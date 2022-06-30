@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest{
 
         if(!$user || !Hash::check($this->input('password'), $user->password)){
             throw ValidationException::withMessages([
-                'account' => ['The provided credentials are incorrect.'],
+                'account' => [__('auth.failed')],
             ]);
         }
         $token = $user->createToken($this->input('device')['uuid'], ['*'], $this->input('device')['extra'] ?? []);
