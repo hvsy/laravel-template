@@ -36,7 +36,7 @@ class LoginRequest extends FormRequest{
      *
      * @throws ValidationException
      */
-    public function authenticate(){
+    public function authenticate(): string{
         $this->ensureIsNotRateLimited();
 
         $user = User::where('account', $this->input('account'))->first();
