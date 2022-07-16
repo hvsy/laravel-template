@@ -8,6 +8,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use function bcrypt;
+use function response;
 
 class AuthController extends Controller{
     public function logout(Request $request){
@@ -15,6 +17,24 @@ class AuthController extends Controller{
         $token = $user->currentAccessToken();
         $token->delete();
         return response()->json(true);
+    }
+
+    public function putChangePassword(Request $request){
+        $user = $request->user();
+        $data = $this->validate($request, [
+            'old_password'=>[
+                'required','string',function($attr,$value,$fail) use ($user){
+                    if(!Hash::check($value,$user->password)){
+                        $fail('原始密码错误');
+                    }
+                }
+            ],
+            'new_password'=>['required','confirmed'],
+        ]);
+        $user->password = bcrypt($data['new_password']);
+        $user->save();
+        return response()->json(true);
+
     }
 
     public function user(Request $request){
