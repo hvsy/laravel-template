@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\CustomPersonalAccessToken;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use function str_replace;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Sanctum::usePersonalAccessTokenModel(CustomPersonalAccessToken::class);
+        HeadingRowFormatter::extend('chinese', function($value, $key) {
+            return str_replace('*', '', $value);
+        });
     }
 }

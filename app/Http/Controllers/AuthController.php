@@ -29,9 +29,9 @@ class AuthController extends Controller{
                     }
                 }
             ],
-            'new_password'=>['required','confirmed'],
+            'password'=>['required','confirmed'],
         ]);
-        $user->password = bcrypt($data['new_password']);
+        $user->password = bcrypt($data['password']);
         $user->save();
         return response()->json(true);
 
