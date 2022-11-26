@@ -40,6 +40,21 @@ class AuthController extends Controller{
     public function user(Request $request){
         return response()->json($request->user());
     }
+    
+    public function postFake(Request $request,User $user){
+        $current = $request->user();
+        $token = $current->switchTo($user);
+        return res()->json($token);
+    }
+    
+    public function deleteFake(Request $request){
+        $current = $request->user();
+        $to = $current->getFakerAttribute();
+        if(!empty($to)){
+            $token = $current->switchTo($to);
+        }
+        return res()->json($token);
+    }
 
     public function register(Request $request){
         $data = $this->validate($request, [

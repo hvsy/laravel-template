@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth:sanctum','prefix' => 'admin'],function(){
     Route::post('logout',[AuthController::class,'logout'])->name('logout');
     Route::get('/user', [AuthController::class,'user']);
     Route::put('change-password',[AuthController::class,'putChangePassword'])->name('change.password');
+    Route::post('/fake/{user}', [AuthController::class,'postFake']);
+    Route::delete('/fake', [AuthController::class,'deleteFake']);
 });
 
 Route::middleware('guest')->post('login',[AuthController::class,'login'])->name('login');

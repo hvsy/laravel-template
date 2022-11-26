@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class CustomPersonalAccessToken extends PersonalAccessToken{
@@ -12,10 +13,16 @@ class CustomPersonalAccessToken extends PersonalAccessToken{
         'token',
         'abilities',
         'extra',
+        'faker_type',
+        'faker_id',
     ];
     protected $casts = [
         'abilities' => 'json',
         'last_used_at' => 'datetime',
         'extra' => 'json',
     ];
+    
+    public function faker(): MorphTo{
+        return $this->morphTo();
+    }
 }

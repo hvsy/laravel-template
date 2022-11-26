@@ -62,4 +62,24 @@ class User extends Authenticatable
 
          return new NewAccessToken($token, $token->getKey() . '|' . $plainTextToken);
      }
+    
+    
+    public function getFakerAttribute(){
+        return $this->accessToken->faker;
+    }
+    
+    public function switchTo(User $user) : CustomPersonalAccessToken{
+        /**
+         * @var CustomPersonalAccessToken $token
+         */
+        $token = $this->accessToken;
+        $token->tokenable()->associate($user);
+        if(empty($token->faker)){
+            $token->faker()->associate($this);
+        }else if($token->faker->id === $user->id){
+            $token->faker()->dissociate();
+        }
+        $token->save();
+        return $token;
+    }
 }
