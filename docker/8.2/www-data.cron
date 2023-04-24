@@ -1,0 +1,1 @@
+* * * * *  /usr/bin/php /data/www/laravel/artisan schedule:run >> /data/www/laravel/storage/logs/background/schedule.log 2>&1

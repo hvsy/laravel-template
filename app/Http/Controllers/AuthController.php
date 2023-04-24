@@ -38,6 +38,8 @@ class AuthController extends Controller{
     }
 
     public function user(Request $request){
+        $user = $request->user();
+        $user->append('faker');
         return response()->json($request->user());
     }
     

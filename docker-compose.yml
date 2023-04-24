@@ -1,31 +1,34 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-    laravel.test:
+    laravel:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./docker/8.2/
             dockerfile: Dockerfile
             args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
+                WWWGROUP: '${WWWGROUP:-1000}'
+                TZ: Asia/Shanghai
+        image: laravel/php82
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
             - '${APP_PORT:-80}:80'
         environment:
-            WWWUSER: '${WWWUSER}'
+            WWWUSER: '${WWWUSER:-www-data}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            TZ: Asia/Shanghai
         volumes:
-            - '.:/var/www/html'
+            - '.:/data/www/laravel'
+            - './docker/limits.conf:/etc/security/limits.conf'
+            - './docker/8.2/laravel.conf:/data/www/main.conf'
         networks:
             - sail
         depends_on:
-            - mariadb
-            - redis
-    mariadb:
-        image: 'mariadb:10'
+            - mysql
+    mysql:
+        image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
@@ -34,15 +37,17 @@ services:
             MYSQL_DATABASE: '${DB_DATABASE}'
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sail-mariadb:/var/lib/mysql'
+            - 'sail-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
+
     redis:
         image: 'redis:alpine'
         ports:
@@ -52,7 +57,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
+            test: [ "CMD", "redis-cli", "ping" ]
             retries: 3
             timeout: 5s
 
@@ -71,14 +76,12 @@ services:
         networks:
             - sail
         healthcheck:
-            test:  ["CMD", "curl", "-f", "http://localhost:6001"]
+            test: [ "CMD", "curl", "-f", "http://localhost:6001" ]
             retries: 3
             timeout: 5s
 networks:
     sail:
         driver: bridge
 volumes:
-    sail-mariadb:
-        driver: local
-    sail-redis:
+    sail-mysql:
         driver: local
