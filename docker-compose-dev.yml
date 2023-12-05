@@ -22,6 +22,7 @@ services:
     volumes:
       - '.:/data/www/laravel'
       - './docker/8.2/laravel.conf:/data/www/main.conf'
+      - './docker/8.2/ws.conf:/etc/nginx/conf/ws.conf'
     networks:
       - sail
     depends_on:

@@ -23,6 +23,7 @@ services:
             - '.:/data/www/laravel'
             - './docker/limits.conf:/etc/security/limits.conf'
             - './docker/8.2/laravel.conf:/data/www/main.conf'
+            - './docker/8.2/ws.conf:/etc/nginx/conf/ws.conf'
         networks:
             - sail
         depends_on:
