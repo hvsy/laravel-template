@@ -42,6 +42,7 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
         'ses' => [
@@ -55,7 +56,11 @@ return [
         'postmark' => [
             'transport' => 'postmark',
         ],
-
+        
+        'resend' => [
+            'transport' => 'resend',
+        ],
+        
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
@@ -75,6 +80,14 @@ return [
             'mailers' => [
                 'smtp',
                 'log',
+            ],
+        ],
+        
+        'roundrobin' => [
+            'transport' => 'roundrobin',
+            'mailers' => [
+                'ses',
+                'postmark',
             ],
         ],
     ],

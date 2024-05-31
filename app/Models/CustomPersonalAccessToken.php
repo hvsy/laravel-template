@@ -16,12 +16,15 @@ class CustomPersonalAccessToken extends PersonalAccessToken{
         'faker_type',
         'faker_id',
     ];
-    protected $casts = [
-        'abilities' => 'json',
-        'last_used_at' => 'datetime',
-        'extra' => 'json',
-    ];
     
+    protected function casts(): array
+    {
+        return [
+            'abilities' => 'json',
+            'last_used_at' => 'datetime',
+            'extra' => 'json',
+        ];
+    }
     public function faker(): MorphTo{
         return $this->morphTo();
     }

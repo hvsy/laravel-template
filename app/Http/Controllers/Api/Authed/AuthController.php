@@ -24,7 +24,7 @@ class AuthController extends Controller
         return response()->json(true);
     }
     
-    #[Put('change-password','change.password')]
+    #[Put('password/change','change.password')]
     public function putChangePassword(Request $request){
         $user = $request->user();
         $data = $this->validate($request, [

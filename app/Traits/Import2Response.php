@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use JetBrains\PhpStorm\ArrayShape;
 
 trait Import2Response{
     private int $rowNumber = 0;
@@ -15,7 +14,9 @@ trait Import2Response{
         return $this;
     }
 
-    #[ArrayShape(['count' => "int", 'failures' => "mixed"])]
+    /**
+     * @return array{ count:int,failures:array{ row : int,attribute : string,value:string,errors : array{}}
+     */
     public function toResponse(): array{
         $head = $this->headingRow();
         return [

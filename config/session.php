@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,8 +32,8 @@ return [
     */
 
     'lifetime' => env('SESSION_LIFETIME', 120),
-
-    'expire_on_close' => false,
+    
+    'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,8 +45,8 @@ return [
     | automatically by Laravel and you can use the Session like normal.
     |
     */
-
-    'encrypt' => false,
+    
+    'encrypt' => env('SESSION_ENCRYPT', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,8 +84,8 @@ return [
     | provided for you; however, you are free to change this as needed.
     |
     */
-
-    'table' => 'sessions',
+    
+    'table' => env('SESSION_TABLE', 'sessions'),
 
     /*
     |--------------------------------------------------------------------------
@@ -141,8 +141,8 @@ return [
     | your application but you are free to change this when necessary.
     |
     */
-
-    'path' => '/',
+    
+    'path' => env('SESSION_PATH', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -180,8 +180,8 @@ return [
     | the HTTP protocol. You are free to modify this option if needed.
     |
     */
-
-    'http_only' => true,
+    
+    'http_only' => env('SESSION_HTTP_ONLY', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -195,7 +195,8 @@ return [
     | Supported: "lax", "strict", "none", null
     |
     */
-
-    'same_site' => 'lax',
-
+    
+    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    
+    'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
 ];

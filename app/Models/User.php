@@ -44,15 +44,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'account_verified_at' => 'datetime',
-    ];
-
+    
+    public function casts()
+    {
+        return [
+            'account_verified_at' => 'datetime',
+        ];
+    }
+    
     public function createToken(string $name, array $abilities = ['*'], array $extra = []): NewAccessToken{
          $token = $this->tokens()->create([
              'name' => $name,

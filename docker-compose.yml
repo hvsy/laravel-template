@@ -3,12 +3,12 @@ version: '3'
 services:
     laravel:
         build:
-            context: ./docker/8.2/
+            context: docker/8.3/
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP:-1000}'
                 TZ: Asia/Shanghai
-        image: laravel/php82
+        image: laravel/php83
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -22,8 +22,8 @@ services:
         volumes:
             - '.:/data/www/laravel'
             - './docker/limits.conf:/etc/security/limits.conf'
-            - './docker/8.2/laravel.conf:/data/www/main.conf'
-            - './docker/8.2/ws.conf:/etc/nginx/conf/ws.conf'
+            - './docker/8.3/laravel.conf:/data/www/main.conf'
+            - './docker/8.3/ws.conf:/etc/nginx/conf/ws.conf'
         networks:
             - sail
         depends_on:
